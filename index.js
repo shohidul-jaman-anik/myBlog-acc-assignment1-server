@@ -29,7 +29,7 @@ const run = async () => {
 
       res.send({ status: true, data: product });
     });
-    
+
     app.get("/blogs/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) }
@@ -51,6 +51,20 @@ const run = async () => {
       const result = await productCollection.deleteOne({ _id: ObjectId(id) });
       res.send(result);
     });
+
+
+    app.put('/blogs/:id', async (req, res) => {
+      const id = req.params.id
+      const blog = req.body
+      const filter = { _id: ObjectId(id) };
+      const option = { upsert: true };
+      const updateDoc = {
+        $set: blog,
+      }
+      const data = await productCollection.updateOne(filter, updateDoc, option)
+      res.send(data)
+    })
+
   } finally {
   }
 };
